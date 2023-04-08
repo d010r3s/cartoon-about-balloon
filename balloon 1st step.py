@@ -9,7 +9,8 @@ def fxv(x1, x2, y, phi1, phi2):
     third = y + y * sin(3 * math.pi / 2 - phi1) - Ay
     fourth = (phi1 + phi2) * y + (x2 - x1) - C
     fifth = y + y * sin(3 * math.pi / 2 + phi2) - By
-    return first, second, third, fourth, fifth
+    X = np.array([first, second, third, fourth, fifth])
+    return X
 # Ax, Ay, Bx, By, C = (float(input()) for _ in range(5))
 
 Ax = -0.353
@@ -17,20 +18,19 @@ Bx = 0.353
 Ay = By = 0.3
 C = 3*math.pi/8
 
-x1 = -0.5
-x2 = 0.5
-y = 0.5
-phi1 = 1.0
-phi2 = -1.0
+x1 = -0.3
+x2 = 0.66
+y = 0.6
+phi1 = 0.7
+phi2 = -0.7
 
-Fx = [fxv(x1, x2, y, phi1, phi2)]
-Xv = np.array(Fx)
+Xv = fxv(x1, x2, y, phi1, phi2)
 Xv0 = np.array([x1, x2, y, phi1, phi2])
 for i in range(100):
-    Xv = np.array(fxv(x1, x2, y, phi1, phi2))
+    Xv = fxv(x1, x2, y, phi1, phi2)
     a = (Xv - Xv0) / Xv
-    if (abs(a) < 1e-9).all():
-        print(Xv, a)
+    if (abs(a) < 1e-10).all():
+        print(Xv)
         break
     x1 = Xv0[0]
     x2 = Xv0[1]
@@ -49,18 +49,7 @@ alpha2 = 3*math.pi/2
 x01 = [x1, x2]
 y01 = [y1, y2]
 
-x02 = [x1, x2]
-y02 = [y1+0.01, y2+0.01]
-
 fig, ax = plt.subplots()
-
-# Plot the two lines
-ax.plot(x01, y01)
-ax.plot(x02, y02)
-
-# Draw circles at the ends of the upper line
-# ax.add_patch(plt.Circle((x1, y2+0.0001), radius=0.0001, fill=False, color='black'))
-# ax.add_patch(plt.Circle((x2, y2+0.0001), radius=0.0001, fill=False, color='black'))
 
 arc_x = x2
 arc_y = y2+0.01
@@ -73,6 +62,7 @@ arc = patches.Arc((arc_x, arc_y),
                                  arc_height,
                                  theta1=arc_theta1,
                                  theta2=arc_theta2)
+arc_radius = ((0.5 * arc_width)**2 + arc_height**2) / 2*arc_height
 ax.add_patch(arc)
 arc_x = x1
 arc_y = y1+0.01
@@ -86,5 +76,14 @@ arc = patches.Arc((arc_x, arc_y),
 ax.add_patch(arc)
 ax.set_xlim(0, 5)
 ax.set_ylim(0, 5)
+
+x01 = [x1, x2]
+y01 = [y1, y2]
+x02 = [x1+arc_height/2, x2-arc_height/2]
+# print(arc_radius)
+y02 = [y1 + 0.01 + (arc_height/2) * sin(phi2), y2 + 0.01 + (arc_height/2) * sin(phi1)]
+ax.plot(x01, y01)
+ax.plot(x02, y02)
+
 plt.axis('equal')
 plt.show()
