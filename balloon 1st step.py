@@ -79,7 +79,7 @@ x01 = [x1, x2]
 y01 = [y1, y2]
 x02 = [x1+arc_height/2, x2-arc_height/2]
 # print(arc_radius)
-y02 = [y1 + 0.01 - 0.5 * arc_height * sin(phi1), y2 + 0.01 - 0.5 * arc_height * sin(phi2)]
+y02 = [y1 + 0.01 - 0.5 * arc_height * sin(abs(phi1)), y2 + 0.01 - 0.5 * arc_height * sin(abs(phi2))]
 ax.plot(x01, y01)
 ax.plot(x02, y02)
 
