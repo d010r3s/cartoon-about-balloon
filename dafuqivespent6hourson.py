@@ -67,7 +67,7 @@ arc_y = y2+0.01
 arc_width = 0.02
 arc_height = 0.02
 arc_theta1 = 270
-arc_theta2 = math.degrees(abs(phi2))
+arc_theta2 = math.degrees(abs(phi2))+180
 arc = patches.Arc((arc_x, arc_y),
                                  arc_width,
                                  arc_height,
